@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo from '../images/logo.svg';
 import axios from 'axios';
+import { pathOr } from 'ramda';
+import logo from '../images/logo.svg';
 import './Home.scss';
 
 class Home extends Component {
@@ -8,15 +9,23 @@ class Home extends Component {
     super(props, context);
 
     this.state = {
-      message: '',
+      cep: '',
+      logradouro: '',
+      localidade: '',
+      uf: ''
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     axios.get('/api/cep')
       .then( (response) => {
         this.setState((state, props) => {
-          return {message: response.data.message};
+          return {
+            cep: pathOr('', ['data', 'cep'], response),
+            logradouro: pathOr('', ['data', 'logradouro'], response),
+            localidade: pathOr('', ['data', 'localidade'], response),
+            uf: pathOr('', ['data', 'uf'], response)
+          };
         });
       })
       .catch( (error) => {
@@ -43,11 +52,10 @@ class Home extends Component {
           >
             Learn React
           </a>
-          {this.state.message ? 
-            <p>{this.state.message}</p>
-            : 
-            ''
-          }
+          <p>CEP: {this.state.cep}</p>
+          <p>Estado: {this.state.uf}</p>
+          <p>Cidade: {this.state.localidade}</p>
+          <p>Logradouro: {this.state.logradouro}</p>
         </header>
       </div>
     );
