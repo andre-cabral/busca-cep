@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Home from '../home/home-component';
+import Home from './home/home-component';
 
-const App = () => {
+const Routes = () => {
   return (
     <Router>
       <Route exact path="/" component={Home} />
@@ -10,4 +10,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default Routes;

@@ -8,7 +8,7 @@ import promise from 'redux-promise';
 
 import reducers from './index-reducer'
 import './index-style.scss';
-import App from './app/app';
+import Routes from './index-routes';
 import * as serviceWorker from './serviceWorker';
 
 const devTools = window.devToolsExtension ? window.devToolsExtension() : f => f;
@@ -19,7 +19,7 @@ const store = compose(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Routes />
   </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

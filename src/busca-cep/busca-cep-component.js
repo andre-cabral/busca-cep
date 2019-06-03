@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import './busca-cep-style.scss';
 import Button from '../button/button-component';
 import Input from '../input/input-component';
 
 class BuscaCep extends Component {
   render() {
-    const { cepInput, cep, uf, localidade, logradouro } = this.props;
+    const { cepInput, cep, uf, localidade, logradouro, error } = this.props;
     const changeCepInput = (e) => {
       this.props.changeCepInput(e.target.value)
     };
@@ -17,9 +16,11 @@ class BuscaCep extends Component {
     return(
       <article className="cep">
         <form className="cep__form" onSubmit={cepRequest}>
-          <Input classes="input--light" id="input-cep" onChange={changeCepInput} />
+          <Input classes="input--light" id="input-cep" onChange={changeCepInput} typeName="cep" />
           <Button classes="button--dark" text="Buscar CEP" />
+          <p className="cep__error">{error}</p>
         </form>
+        {cep &&
         <section className="cep__data">
           {/*
           Utilizada a tag <p> ao invés da tag <address> pois
@@ -44,6 +45,7 @@ class BuscaCep extends Component {
             <span className="cep__text--value">{logradouro}</span>
           </p>
         </section>
+        }
       </article>
     );
   }

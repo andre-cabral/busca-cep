@@ -16,19 +16,27 @@ const cepInputAction = (cepInput) => {
 
 export const cepRequest = (cepInput) => {
   return (dispatch) => {
-    dispatch(cepRequestAction());
-    axios.get(`/api/cep?cep=${cepInput}`)
-      .then( 
-        (response) => {
-          return dispatch(cepSuccessAction({
-            cep: pathOr('', ['data', 'cep'], response),
-            logradouro: pathOr('', ['data', 'logradouro'], response),
-            localidade: pathOr('', ['data', 'localidade'], response),
-            uf: pathOr('', ['data', 'uf'], response)
-          }));
-        }
-      )
-      .catch( (error) => dispatch(cepErrorAction(error)));
+    if(cepInput.length === 8){
+      dispatch(cepRequestAction());
+      axios.get(`/api/cep?cep=${cepInput}`)
+        .then(
+          (response) => {
+            if(pathOr('', ['data', 'cep'], response) !== '') {
+              return dispatch(cepSuccessAction({
+                cep: pathOr('', ['data', 'cep'], response),
+                logradouro: pathOr('', ['data', 'logradouro'], response),
+                localidade: pathOr('', ['data', 'localidade'], response),
+                uf: pathOr('', ['data', 'uf'], response)
+              }));
+            } else {
+              return dispatch(cepErrorAction('Digite um CEP válido!'));
+            }
+          }
+        )
+        .catch( (error) => dispatch(cepErrorAction('Digite um CEP válido!')));
+      } else {
+        return dispatch(cepErrorAction('Digite um CEP válido!'));
+      }
   };
 };
 

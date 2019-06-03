@@ -35,6 +35,7 @@ const BuscaCepReducer = (state = initialState, action) => {
         return {
           ...state,
           cepInput: action.payload,
+          error: ''
         };
     default:
       return state;
