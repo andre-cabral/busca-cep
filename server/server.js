@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-const cepHelper = require('./helpers/cep-server-helpers.js');
+const cepHelper = require('./server-helpers.js');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -12,7 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // API calls
 app.get('/api/cep', (req, res) => {
-  axios.get('https://viacep.com.br/ws/04571010/json/')
+  const cep = req.query.cep;
+  axios.get(`https://viacep.com.br/ws/${cep}/json/`)
     .then( (response) => {
       res.send(cepHelper.parseCep(response.data));
     })
@@ -20,7 +21,6 @@ app.get('/api/cep', (req, res) => {
       res.send({error});
       console.log(error);
     });
-  
 });
 
 if (process.env.NODE_ENV === 'production') {
